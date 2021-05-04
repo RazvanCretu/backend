@@ -5,11 +5,11 @@ module.exports = ({ env }) => ({
         connector: 'bookshelf',
         settings: {
           client: 'mysql',
-          host: env('DATABASE_HOST', 'eu-cdbr-west-01.cleardb.com'),
+          host: env('DATABASE_HOST', '127.0.0.1'),
           port: env.int('DATABASE_PORT', 3306),
-          database: env('DATABASE_NAME', 'heroku_87f4e105d3668a7'),
-          username: env('DATABASE_USERNAME', 'b5c96413ca9174'),
-          password: env('DATABASE_PASSWORD', 'c6938fa5'),
+          database: env('DATABASE_NAME', 'strapi'),
+          username: env('DATABASE_USERNAME', 'admin'),
+          password: env('DATABASE_PASSWORD', 'admin'),
           ssl: env.bool('DATABASE_SSL', false),
         },
         options: {}
