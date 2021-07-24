@@ -8,7 +8,8 @@
   "options": {
     "increments": true,
     "timestamps": true,
-    "draftAndPublish": true
+    "draftAndPublish": true,
+    "privateAttributes":["likes.id"]
   },
   "pluginOptions": {},
   "attributes": {
@@ -17,6 +18,16 @@
     },
     "content": {
       "type": "richtext"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "likes": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "postsLiked",
+      "dominant": true,
+      "populte": "id"
     }
   }
 }
