@@ -1,10 +1,7 @@
 /* eslint-disable no-undef */
 "use strict";
-require("dotenv").config();
+
 const axios = require("axios");
-/**
- * A set of functions called "actions" for `hello`
- */
 
 module.exports = {
   findSummoner: async (ctx) => {
