@@ -3,15 +3,7 @@
     {
       "method": "GET",
       "path": "/summoner/:summoner",
-      "handler": "summoner.findSummoner",
-      "config": {
-        "policies": []
-      }
-    },
-    {
-      "method": "GET",
-      "path": "/games/:puuid",
-      "handler": "summoner.findGamesBySummoner",
+      "handler": "summoner.findSummonerByName",
       "config": {
         "policies": []
       }

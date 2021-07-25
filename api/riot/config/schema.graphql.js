@@ -5,16 +5,22 @@
 module.exports = {
   definition: `
       type Game {
-        gameCreation: Int!,
-        gameDuration: Int!,
+        gameCreation: String!,
+        gameDuration: String!,
         gameId: Int!,
         gameMode: String!,
+        assists: Int!,
+        kills: Int!,
+        deaths: Int!,
+        championName: String!,
+        champLevel: Int!
+        win: Boolean!
       }
   
       type Summoner {
         id: String!,
         accountId: String!,
-        puuid: String!,
+        puuid: String!, 
         name: String!,
         profileIconId: Int!,
         revisionDate: Int!,
@@ -28,16 +34,7 @@ module.exports = {
     Query: {
       Summoner: {
         description: "Get the Summoner object in the Riot API.",
-        resolver: "application::riot.summoner.findSummoner",
-      },
-    },
-    Summoner: {
-      games: {
-        description: "Get the last five games played by Summoner.",
-        resolverOf: "application::riot.summoner.findGamesBySummoner",
-        resolver: async (summoner, options, ctx) => {
-          return strapi.services.riot.games(summoner.puuid);
-        },
+        resolver: "application::riot.summoner.findSummonerByName",
       },
     },
   },

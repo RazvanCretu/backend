@@ -1,16 +1,19 @@
 const axios = require("axios");
 
-const RIOT_KEY = process.env.RIOT_KEY;
+const fetchRiot = async (uri) => {
+  const { data } = await axios.get(uri, {
+    headers: { "X-Riot-Token": process.env.RIOT_KEY },
+  });
+
+  return data;
+};
 
 module.exports = {
   summoner: async (name) => {
     // Setup e-mail data.
     try {
-      const { data } = await axios.get(
-        `https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}`,
-        {
-          headers: { "X-Riot-Token": RIOT_KEY },
-        }
+      const data = await fetchRiot(
+        `https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}`
       );
       return data;
     } catch (err) {
@@ -19,31 +22,32 @@ module.exports = {
   },
   games: async (puuid) => {
     try {
-      const { data } = await axios.get(
-        `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=5`,
-        {
-          headers: { "X-Riot-Token": RIOT_KEY },
-        }
+      const data = await fetchRiot(
+        `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=5`
       );
 
       const games = await Promise.all(
         data.map(async (id) => {
           const {
-            data: {
-              info: { gameCreation, gameDuration, gameId, gameMode },
+            info: {
+              gameCreation,
+              gameDuration,
+              gameId,
+              gameMode,
+              participants,
             },
-          } = await axios.get(
-            `https://europe.api.riotgames.com/lol/match/v5/matches/${id}`,
-            {
-              headers: { "X-Riot-Token": RIOT_KEY },
-            }
+          } = await fetchRiot(
+            `https://europe.api.riotgames.com/lol/match/v5/matches/${id}`
           );
 
           return {
-            gameCreation: gameCreation / 1000,
+            gameCreation: gameCreation,
             gameDuration: gameDuration,
             gameId: gameId,
             gameMode: gameMode,
+            ...participants.filter((item) => {
+              return item.puuid == puuid;
+            })[0],
           };
         })
       );
